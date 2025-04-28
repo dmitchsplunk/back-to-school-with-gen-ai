@@ -6,7 +6,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.documents import Document
 from langgraph.graph import START, StateGraph
 from typing_extensions import List, TypedDict
-from gradio import gradio as gr
 import logging
 
 logging.basicConfig(level=logging.INFO)

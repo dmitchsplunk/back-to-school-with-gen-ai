@@ -49,7 +49,6 @@ pip install langchain==0.3.24
 pip install langchain_openai==0.3.14
 pip install langchain-chroma==0.2.3
 pip install langgraph==0.3.34
-pip install gradio==5.27.0
 ```
 
 Ensure your OPENAI_API_KEY token is set as an environment variable before running
@@ -64,4 +63,34 @@ To run the application, use the following command:
 
 ``` bash 
 python app.py 
+```
+
+## Add OpenTelemetry Instrumentation
+
+To capture traces from our application, let's add OpenTelemetry instrumentation. 
+We'll start by installing the following packages: 
+
+``` bash
+pip install opentelemetry-distro==0.53b1
+pip install openlit==1.33.20
+```
+
+Then run the following command to load additional instrumentation packags: 
+
+``` bash
+opentelemetry-bootstrap -a install
+```
+
+Define the service name and environment: 
+
+``` bash
+export OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
+export OTEL_SERVICE_NAME=back-to-school-with-gen-ai
+export OTEL_RESOURCE_ATTRIBUTES='deployment.environment=back-to-school-with-gen-ai'
+```
+
+Now we can run the app with OpenTelemetry instrumentation: 
+
+``` bash
+opentelemetry-instrument python app.py
 ```
