@@ -7,9 +7,12 @@ from langchain_core.documents import Document
 from langgraph.graph import START, StateGraph
 from typing_extensions import List, TypedDict
 import logging
+import openlit
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+openlit.init()
 
 # Confirm that the OPENAI_API_KEY is set
 if not os.environ.get("OPENAI_API_KEY"):

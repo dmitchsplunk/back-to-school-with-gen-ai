@@ -79,6 +79,7 @@ Then run the following command to load additional instrumentation packags:
 
 ``` bash
 opentelemetry-bootstrap -a install
+pip uninstall opentelemetry-instrumentation-openai-v2
 ```
 
 Define the service name and environment: 
