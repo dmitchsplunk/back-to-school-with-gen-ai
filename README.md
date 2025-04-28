@@ -25,6 +25,43 @@ cd back-to-school-with-gen-ai
 
 ## Load the Text Book into the Vector Database
 
-Follow the instructions in the [load-textbook example](./load-textbook/README.md) 
+Before running the main application, follow the instructions in 
+the [load-textbook example](./load-textbook/README.md) 
 to load your text book of choice into the vector database. 
 
+## Run the Main Application 
+
+Let's start by creating a virtual environment:
+
+``` bash
+# create a virtual environment
+python -m venv venv
+
+# activate the virtual environment
+source venv/bin/activate
+```
+
+Then we'll install the [pypdf](https://pypdf.readthedocs.io/en/stable/) Python library,
+which we'll use to load and parse the PDF document:
+
+``` bash
+pip install langchain==0.3.24
+pip install langchain_openai==0.3.14
+pip install langchain-chroma==0.2.3
+pip install langgraph==0.3.34
+pip install gradio==5.27.0
+```
+
+Ensure your OPENAI_API_KEY token is set as an environment variable before running
+the application.  For example, if the token is not set as part of your profile,
+use the following command to set it:
+
+``` bash
+export OPENAI_API_KEY=<your OpenAI API key value> 
+```
+
+To run the application, use the following command:
+
+``` bash 
+python app.py 
+```
