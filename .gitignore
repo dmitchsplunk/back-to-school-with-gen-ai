@@ -1,5 +1,5 @@
 # Chroma DB
-./chroma_db/
+chroma_db/
 
 # WebStorm IDE files
 .idea/
