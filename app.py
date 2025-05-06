@@ -8,9 +8,12 @@ from langgraph.graph import START, StateGraph
 from typing_extensions import List, TypedDict
 import logging
 import openlit
+from opentelemetry import trace
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+tracer = trace.get_tracer("back-to-school-with-gen-ai")
 
 openlit.init()
 
@@ -35,13 +38,13 @@ prompt = ChatPromptTemplate.from_template("You are an assistant for question-ans
     + "Context: {context}\n"
     + "Answer:")
 
-example_messages = prompt.invoke(
-    {"context": "The amount of water in an ecosystem affects its living things. Areas with little water, such as deserts, have fewer kinds of living things living there. ", "question": "Which areas have little water?"}
-).to_messages()
+#example_messages = prompt.invoke(
+#    {"context": "The amount of water in an ecosystem affects its living things. Areas with little water, such as deserts, have fewer kinds of living things living there. ", "question": "Which areas have little water?"}
+#).to_messages()
 
-assert len(example_messages) == 1
-print(example_messages[0].content)
-print(example_messages[0])
+#assert len(example_messages) == 1
+#print(example_messages[0].content)
+#print(example_messages[0])
 
 class State(TypedDict):
     question: str
@@ -49,7 +52,10 @@ class State(TypedDict):
     answer: str
 
 def retrieve(state: State):
-    retrieved_docs = vector_store.similarity_search(state["question"])
+    retrieved_docs = vector_store.similarity_search(
+        query = state["question"],
+        k = 2
+    )
     return {"context": retrieved_docs}
 
 def generate(state: State):
@@ -58,11 +64,12 @@ def generate(state: State):
     response = llm.invoke(messages)
     return {"answer": response.content}
 
-# Compile application and test
-graph_builder = StateGraph(State).add_sequence([retrieve, generate])
-graph_builder.add_edge(START, "retrieve")
-graph = graph_builder.compile()
+with tracer.start_as_current_span("invoke-graph") as current_span:
+    # Compile application and test
+    graph_builder = StateGraph(State).add_sequence([retrieve, generate])
+    graph_builder.add_edge(START, "retrieve")
+    graph = graph_builder.compile()
 
-#response = graph.invoke({"question": "Which areas have little water?"})
-response = graph.invoke({"question": "Please create a question that asks how populations in a community survive"})
-print(response["answer"])
+    response = graph.invoke({"question": "What are the four layers of soil?"})
+    #response = graph.invoke({"question": "Please create a question that asks how populations in a community survive"})
+    print(response["answer"])

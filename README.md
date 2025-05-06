@@ -88,6 +88,7 @@ Define the service name and environment:
 export OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
 export OTEL_SERVICE_NAME=back-to-school-with-gen-ai
 export OTEL_RESOURCE_ATTRIBUTES='deployment.environment=back-to-school-with-gen-ai'
+export OTEL_PYTHON_DISABLED_INSTRUMENTATIONS=sqlite3,requests,urllib3
 ```
 
 Now we can run the app with OpenTelemetry instrumentation: 
