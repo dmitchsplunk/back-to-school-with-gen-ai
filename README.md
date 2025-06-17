@@ -47,7 +47,7 @@ which we'll use to load and parse the PDF document:
 ``` bash
 pip install langchain==0.3.24
 pip install langchain_openai==0.3.14
-pip install langchain-chroma==0.2.3
+pip install langchain-chroma==0.2.3 opentelemetry-instrumentation==0.54b1 opentelemetry-instrumentation-asgi==0.54b1 opentelemetry-instrumentation-fastapi==0.54b1
 pip install langgraph==0.3.34
 ```
 
@@ -71,14 +71,14 @@ To capture traces from our application, let's add OpenTelemetry instrumentation.
 We'll start by installing the following packages: 
 
 ``` bash
-pip install opentelemetry-distro==0.53b1
-pip install openlit==1.33.20
+pip install splunk-opentelemetry==2.4.0
+pip install openlit==1.33.20 opentelemetry-api==1.33.1
 ```
 
-Then run the following command to load additional instrumentation packags: 
+Then run the following command to load additional instrumentation packages: 
 
 ``` bash
-opentelemetry-bootstrap -a install
+./venv/bin/opentelemetry-bootstrap -a install
 pip uninstall opentelemetry-instrumentation-openai-v2
 ```
 
@@ -88,7 +88,7 @@ Define the service name and environment:
 export OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
 export OTEL_SERVICE_NAME=back-to-school-with-gen-ai
 export OTEL_RESOURCE_ATTRIBUTES='deployment.environment=back-to-school-with-gen-ai'
-export OTEL_PYTHON_DISABLED_INSTRUMENTATIONS=sqlite3,requests,urllib3
+export OTEL_PYTHON_DISABLED_INSTRUMENTATIONS=requests,urllib3
 ```
 
 Now we can run the app with OpenTelemetry instrumentation: 
